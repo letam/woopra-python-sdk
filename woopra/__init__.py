@@ -69,7 +69,7 @@ class WoopraTracker:
 		else:
 			print("Wrong identifier. Accepted values are WoopraTracker.EMAIL or WoopraTracker.UNIQUE_ID")
 
-	def track(self, event_name, event_data = {}):
+	def track(self, event_name, event_data = {}, referer = None):
 		"""
 		Tracks pageviews and custom events
 		Parameters:
@@ -81,7 +81,7 @@ class WoopraTracker:
 			# This code tracks a custom event through the back-end:
 			woopra.track('signup', {'company' : 'My Business', 'username' : 'johndoe', 'plan' : 'Gold'})
 		"""
-		self.woopra_http_request(True, event_name, event_data)
+		self.woopra_http_request(True, event_name, event_data, referer)
 
 	def push(self):
 		"""
@@ -93,7 +93,7 @@ class WoopraTracker:
 		"""
 		self.woopra_http_request(False)
 
-	def woopra_http_request(self, is_tracking, event_name = None, event_data = {}):
+	def woopra_http_request(self, is_tracking, event_name = None, event_data = {}, referer = None):
 		"""
 		Sends an Http Request to Woopra for back-end identification and/or tracking.
 		Parameters:
@@ -113,6 +113,8 @@ class WoopraTracker:
 			get_params["ip"] = self.ip_address
 		if self.idle_timeout != None:
 			get_params["timeout"] = self.idle_timeout
+		if referer != None:
+			get_params["referer"] = referer
 		# Identification
 		for k, v in self.user_properties.items():
 			get_params["cv_" + k] = v
