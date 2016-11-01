@@ -134,7 +134,7 @@ class WoopraTracker:
 				conn.request("GET", url, headers={'User-agent': self.user_agent})
 			else:
 				conn.request("GET", url)
-		except HTTPException, e: print(str(e))
+		except HTTPException as e: print(str(e))
 
 
 	def set_timeout(self, timeout):
